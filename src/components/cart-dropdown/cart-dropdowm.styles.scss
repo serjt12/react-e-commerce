@@ -16,6 +16,10 @@
     margin: 50px auto;
   }
 
+  .cart-items-container {
+    overflow: auto;
+  }
+
   .cart-items {
     height: 240px;
     display: flex;
@@ -25,5 +29,7 @@
 
   button {
     margin-top: auto;
+    line-height: normal;
+    padding: 18px 8px;
   }
 }
