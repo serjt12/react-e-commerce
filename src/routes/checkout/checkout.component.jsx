@@ -1,8 +1,10 @@
-import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-import { CartContext } from "../../contexts/cart.context";
-
+import {
+    selectCartItems,
+    selectCartTotal,
+} from "../../store/cart/cart.selector";
 import CheckoutItem from "../../components/checkout-item/checkout-item.component";
 
 import {
@@ -11,9 +13,11 @@ import {
     HeaderBlock,
     Total,
     CartEmptyContainer,
-    EmptyMessage
+    EmptyMessage,
 } from "./checkout.styles";
-import Button, { BUTTON_TYPE_CLASSES } from "../../components/button/button.component";
+import Button, {
+    BUTTON_TYPE_CLASSES,
+} from "../../components/button/button.component";
 
 const CartEmpty = () => {
     const navigate = useNavigate();
@@ -30,7 +34,10 @@ const CartEmpty = () => {
             </div>
             <div className="cart-empty-message">
                 <EmptyMessage>Your cart is empty</EmptyMessage>
-                <Button buttonType={BUTTON_TYPE_CLASSES.inverted} onClick={goToShopHandler}>
+                <Button
+                    buttonType={BUTTON_TYPE_CLASSES.inverted}
+                    onClick={goToShopHandler}
+                >
                     Go to the Shop
                 </Button>
             </div>
@@ -39,7 +46,8 @@ const CartEmpty = () => {
 };
 
 const Checkout = () => {
-    const { cartItems, cartTotal } = useContext(CartContext);
+    const cartItems = useSelector(selectCartItems);
+    const cartTotal = useSelector(selectCartTotal);
 
     return (
         <CheckoutContainer>
@@ -60,9 +68,13 @@ const Checkout = () => {
                     <span>Remove</span>
                 </HeaderBlock>
             </CheckoutHeader>
-            { cartItems.length ? cartItems.map((cartItem) => (
-                <CheckoutItem key={cartItem.id} cartItem={cartItem} />
-            )) : <CartEmpty />}
+            {cartItems.length ? (
+                cartItems.map((cartItem) => (
+                    <CheckoutItem key={cartItem.id} cartItem={cartItem} />
+                ))
+            ) : (
+                <CartEmpty />
+            )}
             <Total>Total: ${cartTotal}</Total>
         </CheckoutContainer>
     );
